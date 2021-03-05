@@ -1,0 +1,7 @@
+build
+composer.lock
+vendor
+coverage.clover
+.phpunit.result.cache
+.vscode
+.DS_Store

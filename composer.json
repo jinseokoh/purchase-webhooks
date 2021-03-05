@@ -1,0 +1,49 @@
+{
+    "name": "jinseokoh/purchase-webhooks",
+    "description": "Handling App Purchase Server-to-Server Webhooks",
+    "keywords": [
+        "laravel-app-purchase-server-to-server-webhooks",
+        "laravel-purchase-webhooks"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jinseok Oh",
+            "email": "jinseokoh@hotmail.com",
+            "homepage": "https://github.com/jinseokoh",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "illuminate/support": "^5.5|^6.0|^7.0|^8.0",
+        "bensampo/laravel-enum": "^1.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "~3.7.0|^4.0",
+        "phpunit/phpunit": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "JinseokOh\\PurchaseWebhooks\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JinseokOh\\PurchaseWebhooks\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JinseokOh\\PurchaseWebhooks\\PurchaseWebhooksServiceProvider"
+            ]
+        }
+    }
+}
