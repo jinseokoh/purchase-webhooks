@@ -6,7 +6,12 @@ return [
      * the one you use when validating receipts.
      * https://developer.apple.com/documentation/storekit/in-app_purchase/enabling_server-to-server_notifications?language=objc#overview
      */
-    'shared_secret' => env('APPLE_SHARED_SECRET'),
+
+    // apple
+    'appstore_sandbox' => (bool) env('APPLE_IAP_SANDBOX', true),
+    'appstore_password' => env('APPLE_SHARED_SECRET'),
+    // google
+    'play_package_name' => env('GOOGLE_PLAY_PACKAGE_NAME'),
 
     /*
      * All the events that should be handeled by your application.
@@ -15,6 +20,7 @@ return [
      * You can find a list of all notification types here:
      * https://developer.apple.com/documentation/storekit/in-app_purchase/enabling_server-to-server_notifications?language=objc#3162176
      */
+
     'jobs' => [
         // 'initial_buy' => \\App\\Jobs\\AppstoreNotifications\\HandleInitialBuy::class,
         // 'cancel' => \\App\\Jobs\\AppstoreNotifications\\HandleCancellation::class,

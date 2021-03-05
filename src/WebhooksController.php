@@ -16,13 +16,13 @@ class WebhooksController
     {
         \Log::info('[DEBUG]' . print_r($request->input(), 1));
 
-        if ($request->input('password') !== config('purchase-webhooks.shared_secret')) {
+        if ($request->input('password') !== config('purchase.appstore_password')) {
             throw WebhookFailed::invalidRequest();
         }
 
         $notification = $request->input('notification_type');
         $jobConfigKey = AppleAppstoreEventType::{$notification}();
-        $jobClass = config("purchase-webhooks.jobs.{$jobConfigKey}", null);
+        $jobClass = config("purchase.jobs.{$jobConfigKey}", null);
 
         AppleWebhook::storePayload($jobConfigKey, $request->input());
 
@@ -45,7 +45,7 @@ class WebhooksController
 
         $notification = $request->input('subscriptionNotification.notificationType');
         $jobConfigKey = GooglePlayEventType::JOBS[$notification];
-        $jobClass = config("purchase-webhooks.jobs.{$jobConfigKey}", null);
+        $jobClass = config("purchase.jobs.{$jobConfigKey}", null);
 
         GoogleWebhook::storePayload($jobConfigKey, $request->input());
 

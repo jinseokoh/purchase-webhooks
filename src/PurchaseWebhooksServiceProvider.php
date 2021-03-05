@@ -10,7 +10,7 @@ class PurchaseWebhooksServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/purchase-webhooks.php' => config_path('purchase-webhooks.php'),
+                __DIR__.'/../config/purchase.php' => config_path('purchase.php'),
             ], 'config');
         }
 
@@ -26,6 +26,6 @@ class PurchaseWebhooksServiceProvider extends ServiceProvider
 
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../config/purchase-webhooks.php', 'purchase-webhooks');
+        $this->mergeConfigFrom(__DIR__.'/../config/purchase.php', 'purchase');
     }
 }
