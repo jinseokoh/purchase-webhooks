@@ -2,8 +2,9 @@
     "name": "jinseokoh/purchase-webhooks",
     "description": "Handling App Purchase Server-to-Server Webhooks",
     "keywords": [
-        "laravel-app-purchase-server-to-server-webhooks",
-        "laravel-purchase-webhooks"
+        "jinseokoh",
+        "laravel in-app purchase webhooks",
+        "laravel app-purchase server-to-server webhooks"
     ],
     "license": "MIT",
     "authors": [

@@ -32,7 +32,7 @@ abstract class TestCase extends OrchestraTestCase
             'prefix'   => '',
         ]);
 
-        config(['purchase-webhooks.shared_secret' => 'test_shared_secret']);
+        config(['purchase.appstore_password' => 'test_shared_secret']);
     }
 
     protected function setUpDatabase()

@@ -18,10 +18,10 @@ class IntegrationTest extends TestCase
 
         config(
             [
-                'purchase-webhooks.jobs' => [
+                'purchase.jobs' => [
                     'initial_buy' => DummyJob::class,
                 ],
-                'purchase-webhooks.shared_secret' => 'VALID_APPLE_PASSWORD',
+                'purchase.appstore_password' => 'VALID_APPLE_PASSWORD',
             ]
         );
     }
