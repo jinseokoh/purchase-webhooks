@@ -1,6 +1,6 @@
 <?php
 
-namespace JinseokOh\PurchaseWebhooks\GoogleNotifications;
+namespace JinseokOh\PurchaseWebhooks\ServerNotifications\Google;
 
 class OneTimePurchaseNotification
 {

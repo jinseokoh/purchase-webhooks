@@ -22,12 +22,12 @@ return [
      */
 
     'jobs' => [
-        // 'initial_buy' => \\App\\Jobs\\AppstoreNotifications\\HandleInitialBuy::class,
-        // 'cancel' => \\App\\Jobs\\AppstoreNotifications\\HandleCancellation::class,
-        // 'renewal' => \\App\\Jobs\\AppstoreNotifications\\HandleRenewal::class,
-        // 'interactive_renewal' => \\App\\Jobs\\AppstoreNotifications\\HandleInteractiveRenewal::class,
-        // 'did_change_renewal_pref' => \\App\\Jobs\\AppstoreNotifications\\HandleDidChangeRenewalPreferences::class,
-        // 'did_change_renewal_status' => \\App\\Jobs\\AppstoreNotifications\\HandleDidChangeRenewalStatus::class,
+        // 'initial_buy' => \\App\\Jobs\\AppStore\\HandleInitialBuy::class,
+        // 'cancel' => \\App\\Jobs\\AppStore\\HandleCancellation::class,
+        // 'renewal' => \\App\\Jobs\\AppStore\\HandleRenewal::class,
+        // 'interactive_renewal' => \\App\\Jobs\\AppStore\\HandleInteractiveRenewal::class,
+        // 'did_change_renewal_pref' => \\App\\Jobs\\AppStore\\HandleDidChangeRenewalPreferences::class,
+        // 'did_change_renewal_status' => \\App\\Jobs\\AppStore\\HandleDidChangeRenewalStatus::class,
 
         // 'ONE_TIME_PRODUCT_PURCHASED' => \\App\\Jobs\\PlayStore\\HandleOneTimeProductPurchased::class,
         // 'ONE_TIME_PRODUCT_CANCELED' => \\App\\Jobs\\PlayStore\\HandleOneTimeProductCanceled::class,

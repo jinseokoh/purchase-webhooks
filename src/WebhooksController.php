@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Log;
 use JinseokOh\PurchaseWebhooks\Enums\AppleAppstoreEventType;
 
 use JinseokOh\PurchaseWebhooks\Exceptions\WebhookFailed;
-use JinseokOh\PurchaseWebhooks\GoogleNotifications\GoogleNotification;
-use JinseokOh\PurchaseWebhooks\GoogleNotifications\OneTimePurchaseNotification;
+use JinseokOh\PurchaseWebhooks\ServerNotifications\Apple\AppleNotification;
+use JinseokOh\PurchaseWebhooks\ServerNotifications\Google\GoogleNotification;
+use JinseokOh\PurchaseWebhooks\ServerNotifications\Google\OneTimePurchaseNotification;
+use JinseokOh\PurchaseWebhooks\ServerNotifications\Google\SubscriptionNotification;
 use JinseokOh\PurchaseWebhooks\Model\ApplePurchasePayload;
-use JinseokOh\PurchaseWebhooks\Model\AppleWebhook;
-use JinseokOh\PurchaseWebhooks\Model\GoogleWebhook;
 use JinseokOh\PurchaseWebhooks\Requests\ApplePurchaseWebhookRequest;
 use JinseokOh\PurchaseWebhooks\Requests\GooglePurchaseWebhookRequest;
 
@@ -20,73 +20,76 @@ class WebhooksController
     {
         Log::info('[DEBUG]' . print_r($request->input(), 1));
 
-        if ($request->input('password') !== config('purchase.appstore_password')) {
+        $attributes = $request->all();
+        $appleNotification = AppleNotification::fromArray($attributes);
+        $type = $appleNotification->getNotificationType();
+        $receipt = $appleNotification->getUnifiedReceipt();
+        $password = $appleNotification->getPassword();
+
+        if ($password !== config('purchase.appstore_password')) {
             throw WebhookFailed::invalidRequest();
         }
 
-        $notification = $request->input('notification_type');
-        $jobConfigKey = AppleAppstoreEventType::{$notification}();
-        $jobClass = config("purchase.jobs.{$jobConfigKey}", null);
+        $jobClass = config("purchase.jobs.{$type}");
 
-        AppleWebhook::storePayload($jobConfigKey, $request->input());
+        Log::info('[DEBUG]' . print_r($receipt, 1));
 
-        if (is_null($jobClass)) {
-            throw WebhookFailed::jobClassDoesNotExist($jobConfigKey);
+        if (! is_null($jobClass)) {
+            $job = new $jobClass($appleNotification->getUnifiedReceipt());
+
+            dispatch($job);
         }
-
-        $payload = ApplePurchasePayload::createFromRequest($request);
-        $job = new $jobClass($payload);
-
-        dispatch($job);
 
         return response()->json();
     }
 
-
     public function google(GooglePurchaseWebhookRequest $request)
     {
-        Log::info('[DEBUG]' . print_r($request->input(), 1));
-
         $data = $request->getData();
         if (! $this->isParsable($data)) {
             Log::info(sprintf("[DEBUG] Google Play malformed RTDN: %s", json_encode($request->all())));
 
-            return;
+            return response()->noContent();
         }
 
         $googleNotification = GoogleNotification::parse($data);
 
         if ($googleNotification->isTestNotification()) {
-            $version = $googleNotification
-                ->getTestNotification()
-                ->getVersion();
-
-            Log::info(sprintf("Google Play Test Notification, version: %s", $version));
+            $notification = $googleNotification->getTestNotification();
+            Log::info(sprintf("Google Play Test Notification, version: %s", $notification->getVersion()));
         }
 
         if ($googleNotification->isSubscriptionNotification()) {
-            $notificationType = $googleNotification
-                ->getSubscriptionNotification()
-                ->getNotificationType();
+            $notification = $googleNotification->getSubscriptionNotification();
+            Log::info(sprintf("Google Play Subscription Notification, type: %s", $notification->getNotificationType()));
 
-            Log::info(sprintf("Google Play Subscription Notification, type: %s", $notificationType));
+            $types = (new ReflectionClass(SubscriptionNotification::class))->getConstants();
+            $type = array_search($notification->getNotificationType(), $types);
+            $jobClass = config("purchase.jobs.{$type}");
+
+            if (! is_null($jobClass)) {
+                $job = new $jobClass(
+                    $notification->getPurchaseToken(),
+                    $notification->getSubscriptionId()
+                );
+
+                dispatch($job);
+            }
         }
 
         if ($googleNotification->isOneTimeProductionNotification()) {
-            $notificationType = $googleNotification
-                ->getOneTimeProductNotification()
-                ->getNotificationType();
+            $notification = $googleNotification->getOneTimeProductNotification();
+            Log::info(sprintf("Google Play One Time Production Notification, type: %s", $notification->getNotificationType()));
 
-            Log::info(sprintf("Google Play One Time Production Notification, type: %s", $notificationType));
-
-            $types = (new ReflectionClass(OneTimePurchaseNotification::class))
-                ->getConstants();
-            $type = array_search($notificationType, $types);
-
-            $jobClass = config("purchase.jobs.{$type}", null);
+            $types = (new ReflectionClass(OneTimePurchaseNotification::class))->getConstants();
+            $type = array_search($notification->getNotificationType(), $types);
+            $jobClass = config("purchase.jobs.{$type}");
 
             if (! is_null($jobClass)) {
-                $job = new $jobClass($request->input());
+                $job = new $jobClass(
+                    $notification->getPurchaseToken(),
+                    $notification->getSku()
+                );
 
                 dispatch($job);
             }

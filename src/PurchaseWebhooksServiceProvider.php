@@ -14,13 +14,6 @@ class PurchaseWebhooksServiceProvider extends ServiceProvider
             ], 'config');
         }
 
-        if (! class_exists('CreatePurchaseWebhooksTable')) {
-            $timestamp = date('Y_m_d_His', time());
-            $this->publishes([
-                __DIR__.'/../database/migrations/create_purchase_webhooks_table.php.stub' => database_path("migrations/{$timestamp}_create_purchase_webhooks_table.php"),
-            ], 'migrations');
-        }
-
         $this->loadRoutesFrom(__DIR__.'/routes.php');
     }
 
