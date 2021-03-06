@@ -2,9 +2,9 @@
 
 ## Backgrounds
 
-At the time of writing API servers for a new mobile application, I've found this [aporat/store-receipt-validator](https://github.com/aporat/store-receipt-validator) package very useful to handle in-app one time product purchase requests from Apple App Store and Google Play Store. But, there're occasions that anyone can ask refund their purchases directly to the store without notifying us of the cancellation.
+At the time of writing API servers for a new mobile application, I've found this [aporat/store-receipt-validator](https://github.com/aporat/store-receipt-validator) package very useful to handle in-app one time product purchase requests from Apple App Store and Google Play Store. But, there're occasions that anyone can ask refund their purchases directly to the stores without notifying us of the cancellation.
 
-I know there's an Google Play Store API that we can make use of to retrieve voided purchases information. But, that's not so 2021. The both platforms allow us to register webhook URL address to post back all the store events including INITIAL PURCHASE and CANCELLATION. As long as you've the webhooks in place, you can get almost realtime server-to-server notifications if someone's got refunded. That means you can deprive the user of any privileges or coins within your app.
+I know there exists Google Play Store API that we can make use of to retrieve voided purchases information. But, that's not so 2021. The both platforms allow us to register webhook URL address to post back all the store events including INITIAL PURCHASE and CANCELLATION. As long as you've the webhooks in place, you can get almost realtime server-to-server notifications if someone's got refunded. That means you can deprive the user of any privileges or coins within your app.
 
 This package handles the server to server notifications.
 
@@ -82,7 +82,7 @@ This package registers the following POST routes
 
 ## Usage
 
-- will be presented shortly.
+Uncomment any events of your interest in `config/purchase.php`, and let Job handle the payload from Apple/Googe server.
 
 ## Credits
 
