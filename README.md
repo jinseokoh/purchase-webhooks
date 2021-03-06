@@ -1,12 +1,12 @@
 # Handle App Purchase Server-to-Server Webhooks with Laravel
 
-## Backgrounds
+## Background
 
-At the time of writing API servers for a new mobile application, I've found this [aporat/store-receipt-validator](https://github.com/aporat/store-receipt-validator) package very useful to handle in-app one time product purchase requests from Apple App Store and Google Play Store. But, there're occasions that anyone can ask refund their purchases directly to the stores without notifying us of the cancellation.
+At the time of writing API servers for a new mobile application, I've found this [aporat/store-receipt-validator](https://github.com/aporat/store-receipt-validator) package very useful to validate in-app purchase responses from Apple App Store and Google Play Store. But, there're occasions that anyone can ask refund their purchases directly to the stores without notifying us of the cancellation. We could end up letting them use the app for free.
 
-I know there exists Google Play Store API that we can make use of to retrieve voided purchases information. But, that's not so 2021. The both platforms allow us to register webhook URL address to post back all the store events including INITIAL PURCHASE and CANCELLATION. As long as you've the webhooks in place, you can get almost realtime server-to-server notifications if someone's got refunded. That means you can deprive the user of any privileges or coins within your app.
+I know there exists Google Play Store API that we can make use of to retrieve voided purchases information. But, that's not so 2021. The both platforms allow us to register webhook URL address to post back all the store events including INITIAL PURCHASE and CANCELLATION. As long as you have the webhooks in place, you can get almost realtime server-to-server notifications if someone's got refunded. That means you can deprive the user of any privileges within your app at your discretion.
 
-This package handles the server to server notifications.
+This package handles the server to server notifications via Laravel Jobs.
 
 ## Installation
 
@@ -84,9 +84,7 @@ This package registers the following POST routes
 
 Uncomment any events of your interest in `config/purchase.php`, and let each Job class handle the payload from Apple/Googe server.
 
-### Handle Apple Server Notifications
-
-- the following sample is provided to help you understand how you can prepare your own Laravel Job for Apple Server Notifications.
+### A sample Laravel job to handle Apple Server Notifications.
 
 ```php
 <?php
@@ -123,7 +121,7 @@ class WebhookRefund
 }
 ```
 
-- the following sample is provided to help you understand how you can prepare your own Laravel Job for Google Server Notifications.
+### A sample Laravel job to handle Google Server Notifications.
 
 ```php
 <?php
