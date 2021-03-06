@@ -1,5 +1,13 @@
 # Handle App Purchase Server-to-Server Webhooks with Laravel
 
+## Backgrounds
+
+At the time of writing API servers for a new mobile application, I've found this [aporat/store-receipt-validator](https://github.com/aporat/store-receipt-validator) package very useful to handle in-app one time product purchase requests from Apple App Store and Google Play Store. But, there're occasions that anyone can ask refund their purchases directly to the store without notifying us of the cancellation.
+
+I know there's an Google Play Store API that we can make use of to retrieve voided purchases information. But, that's not so 2021. The both platforms allow us to register webhook URL address to post back all the store events including INITIAL PURCHASE and CANCELLATION. As long as you've the webhooks in place, you can get almost realtime server-to-server notifications if someone's got refunded. That means you can deprive the user of any privileges or coins within your app.
+
+This package handles the server to server notifications.
+
 ## Installation
 
 You can install this package via composer
@@ -65,7 +73,7 @@ return [
         // 'SUBSCRIPTION_EXPIRED' => \App\Jobs\PlayStore\HandleExpired::class
     ],
 ];
-
+```
 
 This package registers the following POST routes
 
@@ -79,10 +87,6 @@ This package registers the following POST routes
 ## Credits
 
 This package is heavily based on [app-vise/laravel-appstore-notifications](https://github.com/app-vise/laravel-appstore-notifications) and [imdhemy/laravel-in-app-purchases](https://github.com/imdhemy/laravel-in-app-purchases) A big thanks to the authors of their great packages.
-
-## Backgrounds
-
-At the time of writing API servers for new mobile application, I wanted to have a drop-in solution to take care of one time in-app purchases as opposed to subscriptions. All the packages I've found are more focused on subscription model, which isn't my use-case. So, I created this package.
 
 ## License
 
