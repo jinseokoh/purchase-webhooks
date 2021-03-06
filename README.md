@@ -82,7 +82,83 @@ This package registers the following POST routes
 
 ## Usage
 
-Uncomment any events of your interest in `config/purchase.php`, and let Job handle the payload from Apple/Googe server.
+Uncomment any events of your interest in `config/purchase.php`, and let each Job class handle the payload from Apple/Googe server.
+
+### Handle Apple Server Notifications
+
+- the following sample is provided to help you understand how you can prepare your own Laravel Job for Apple Server Notifications.
+
+```php
+<?php
+
+namespace App\Jobs\Apple;
+
+use App\Events\VoidProductPurchase;
+use App\Handlers\OrderHandler;
+use JinseokOh\PurchaseWebhooks\ServerNotifications\Apple\ReceiptResponse;
+
+class WebhookRefund
+{
+    private ReceiptResponse $response;
+    private OrderHandler $orderHandler;
+
+    public function __construct(
+        ReceiptResponse $response,
+        OrderHandler $orderHandler
+    ) {
+        $this->response = $response;
+        $this->orderHandler = $orderHandler;
+    }
+
+    public function handle()
+    {
+        foreach ($this->response->getLatestReceiptInfo() as $receiptInfo) {
+            $transactionId = $receiptInfo->getTransactionId();
+            $order = $this->orderHandler->findByPurchaseToken($transactionId);
+            if ($order) {
+                event(new VoidProductPurchase($order));
+            }
+        }
+    }
+}
+```
+
+- the following sample is provided to help you understand how you can prepare your own Laravel Job for Google Server Notifications.
+
+```php
+<?php
+
+namespace App\Jobs\Google;
+
+use App\Events\VoidProductPurchase;
+use App\Handlers\OrderHandler;
+
+class WebhookOneTimeProductCanceled
+{
+    private string $purchaseToken;
+    private string $sku;
+    private OrderHandler $orderHandler;
+
+    public function __construct(
+        string $purchaseToken,
+        string $sku,
+        OrderHandler $orderHandler
+    ) {
+        $this->purchaseToken = $purchaseToken;
+        $this->sku = $sku;
+        $this->orderHandler = $orderHandler;
+    }
+
+    public function handle()
+    {
+        $order = $this->orderHandler
+            ->findByPurchaseToken($this->purchaseToken);
+        if ($order) {
+            event(new VoidProductPurchase($order));
+        }
+    }
+}
+```
 
 ## Credits
 

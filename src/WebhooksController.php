@@ -23,6 +23,7 @@ class WebhooksController
         $attributes = $request->all();
         $appleNotification = AppleNotification::fromArray($attributes);
         $type = $appleNotification->getNotificationType();
+        /** ReceiptResponse $receipt */
         $receipt = $appleNotification->getUnifiedReceipt();
         $password = $appleNotification->getPassword();
 
@@ -35,7 +36,7 @@ class WebhooksController
         Log::info('[DEBUG]' . print_r($receipt, 1));
 
         if (! is_null($jobClass)) {
-            $job = new $jobClass($appleNotification->getUnifiedReceipt());
+            $job = new $jobClass($receipt);
 
             dispatch($job);
         }
