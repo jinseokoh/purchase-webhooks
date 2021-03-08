@@ -6,7 +6,7 @@ At the time of writing API servers for a new mobile application, I've found this
 
 I know there exists Google Play Store API that we can make use of to retrieve voided purchases information. But, that's not so 2021. The both platforms allow us to register webhook URL address to post back all the store events including INITIAL PURCHASE and CANCELLATION. As long as you have the webhooks in place, you can get almost realtime server-to-server notifications if someone's got refunded. That means you can deprive the user of any privileges within your app at your discretion.
 
-This package handles the server to server notifications via Laravel Jobs.
+This package handles the server to server notifications via Laravel Jobs. Note that subscription payment notifications are not fully supported as of yet since that's beyond my use-cases. If your application has subscription based payment options, this might not be what you are looking for.
 
 ## Installation
 

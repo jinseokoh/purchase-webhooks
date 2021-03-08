@@ -72,13 +72,13 @@ class AppleNotification
         $obj = new self();
         $obj->unifiedReceipt = new ReceiptResponse($attributes['unified_receipt']);
         $obj->autoRenewStatusChangeDate = isset($attributes['auto_renew_status_change_date_ms']) ? Carbon::createFromTimestampMs($attributes['auto_renew_status_change_date_ms']) : null;
-        $obj->environment = $attributes['environment'];
-        $obj->autoRenewStatus = $attributes['auto_renew_status'] === "true";
-        $obj->bvrs = $attributes['bvrs'];
-        $obj->bid = $attributes['bid'];
-        $obj->password = $attributes['password'];
-        $obj->autoRenewProductId = $attributes['auto_renew_product_id'];
-        $obj->notificationType = $attributes['notification_type'];
+        $obj->environment = $attributes['environment'] ?? null;
+        $obj->autoRenewStatus = isset($attributes['auto_renew_status']) ? $attributes['auto_renew_status'] === "true" : false;
+        $obj->bvrs = $attributes['bvrs'] ?? null;
+        $obj->bid = $attributes['bid'] ?? null;
+        $obj->password = $attributes['password'] ?? null;
+        $obj->autoRenewProductId = $attributes['auto_renew_product_id'] ?? null;
+        $obj->notificationType = $attributes['notification_type'] ?? null;
 
         return $obj;
     }
